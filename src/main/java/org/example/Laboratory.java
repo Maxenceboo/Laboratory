@@ -56,36 +56,37 @@ public class Laboratory {
         }
         Map<String, Double> recipe = this.reactions.get(productName);
 
-        double maxProducible = requestedQuantity;
+        double actualQuantity = calculateMaxProducible(recipe, requestedQuantity);
 
-        for (Map.Entry<String, Double> ingredient : recipe.entrySet()) {
-            String componentName = ingredient.getKey();
-            double quantityPerUnit = ingredient.getValue();
-
-            double availableStock = this.stock.get(componentName);
-
-            double maxWithThisIngredient = availableStock / quantityPerUnit;
-
-            if (maxWithThisIngredient < maxProducible) {
-                maxProducible = maxWithThisIngredient;
-            }
-        }
-
-        double actualQuantity = maxProducible;
-
-        for (Map.Entry<String, Double> ingredient : recipe.entrySet()) {
-            String componentName = ingredient.getKey();
-            double quantityPerUnit = ingredient.getValue();
-
-            double requiredTotal = quantityPerUnit * actualQuantity;
-
-            double currentStock = this.stock.get(componentName);
-            this.stock.put(componentName, currentStock - requiredTotal);
-        }
-
-        double currentProductStock = this.stock.get(productName);
-        this.stock.put(productName, currentProductStock + actualQuantity);
+        consumeIngredients(recipe, actualQuantity);
+        produceResult(productName, actualQuantity);
 
         return actualQuantity;
+    }
+
+    private double calculateMaxProducible(Map<String, Double> recipe, double requestedQuantity) {
+        double maxProducible = requestedQuantity;
+        for (Map.Entry<String, Double> ingredient : recipe.entrySet()) {
+            double available = this.stock.get(ingredient.getKey());
+            double neededPerUnit = ingredient.getValue();
+            double maxForIngredient = available / neededPerUnit;
+
+            if (maxForIngredient < maxProducible) {
+                maxProducible = maxForIngredient;
+            }
+        }
+        return maxProducible;
+    }
+
+    private void consumeIngredients(Map<String, Double> recipe, double quantity) {
+        for (Map.Entry<String, Double> ingredient : recipe.entrySet()) {
+            String name = ingredient.getKey();
+            double needed = ingredient.getValue() * quantity;
+            this.stock.put(name, this.stock.get(name) - needed);
+        }
+    }
+
+    private void produceResult(String productName, double quantity) {
+        this.stock.put(productName, this.stock.get(productName) + quantity);
     }
 }
