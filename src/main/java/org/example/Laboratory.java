@@ -51,13 +51,33 @@ public class Laboratory {
     }
 
     public double make(String productName, double requestedQuantity) {
+        return makeRecursive(productName, requestedQuantity);
+    }
+
+    private double makeRecursive(String productName, double requestedQuantity) {
         if (!this.reactions.containsKey(productName)) {
-            throw new IllegalArgumentException("Unknown product: " + productName);
+            return 0.0;
         }
         Map<String, Double> recipe = this.reactions.get(productName);
 
-        double actualQuantity = calculateMaxProducible(recipe, requestedQuantity);
+        for (Map.Entry<String, Double> ingredient : recipe.entrySet()) {
+            String ingredientName = ingredient.getKey();
+            double neededPerUnit = ingredient.getValue();
 
+            double totalNeeded = neededPerUnit * requestedQuantity;
+
+            double currentStock = this.stock.getOrDefault(ingredientName, 0.0);
+
+            if (currentStock < totalNeeded) {
+                double missing = totalNeeded - currentStock;
+
+                if (this.reactions.containsKey(ingredientName)) {
+                    makeRecursive(ingredientName, missing);
+                }
+            }
+        }
+
+        double actualQuantity = calculateMaxProducible(recipe, requestedQuantity);
         consumeIngredients(recipe, actualQuantity);
         produceResult(productName, actualQuantity);
 
