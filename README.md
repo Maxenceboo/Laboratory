@@ -1,7 +1,3 @@
-Voici les consignes de l'atelier formatées en Markdown, prêtes à être intégrées dans un fichier `README.md` ou un sujet de TP.
-
----
-
 # Atelier TDD : Gestion de Laboratoire
 
 Cet atelier individuel a pour but d'élaborer une classe généralisant l'objet créé lors du précédent atelier, en adoptant une approche **Test Driven Development (TDD)** stricte.
