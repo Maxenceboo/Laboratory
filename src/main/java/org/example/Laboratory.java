@@ -27,6 +27,11 @@ public class Laboratory {
 
     public void add(String substance, double quantity) {
         ensureSubstanceExists(substance);
+
+        if (quantity < 0) {
+            throw new IllegalArgumentException("Quantity cannot be negative");
+        }
+
         double newQuantity = this.stock.get(substance) + quantity;
         this.stock.put(substance, newQuantity);
     }
