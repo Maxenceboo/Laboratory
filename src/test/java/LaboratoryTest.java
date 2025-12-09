@@ -133,6 +133,30 @@ class LaboratoryTest {
         assertEquals(1.0, lab.getQuantity("Water"), "Only 1 unit produced");
     }
 
+    @Test
+    void should_automatically_produce_intermediate_ingredients() {
+        Map<String, Double> intermediateRecipe = new HashMap<>();
+        intermediateRecipe.put("BaseItem", 1.0);
+
+        Map<String, Double> finalRecipe = new HashMap<>();
+        finalRecipe.put("Intermediate", 1.0);
+
+        Map<String, Map<String, Double>> reactions = new HashMap<>();
+        reactions.put("Intermediate", intermediateRecipe);
+        reactions.put("ProductFinal", finalRecipe);
+
+        Laboratory lab = new Laboratory(Arrays.asList("BaseItem"), reactions);
+
+        lab.add("BaseItem", 10.0);
+
+        double produced = lab.make("ProductFinal", 5.0);
+
+        assertEquals(5.0, produced, "Should produce final product by making intermediate first");
+        assertEquals(5.0, lab.getQuantity("BaseItem"), "Should have consumed 5 BaseItem");
+        assertEquals(5.0, lab.getQuantity("ProductFinal"));
+        assertEquals(0.0, lab.getQuantity("Intermediate"));
+    }
+
     // --- Helper Methods ---
 
     private Laboratory createSimpleLab(String... substances) {
