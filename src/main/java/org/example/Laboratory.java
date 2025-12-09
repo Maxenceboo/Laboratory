@@ -20,4 +20,7 @@ public class Laboratory {
         }
         return this.stock.get(substance);
     }
+
+    public void add(String substance, double quantity) {
+    }
 }

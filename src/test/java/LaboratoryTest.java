@@ -30,4 +30,13 @@ class LaboratoryTest {
             lab.getQuantity("Gold"); // "Gold" n'a pas été initialisé
         });
     }
+
+    @Test
+    void should_update_quantity_when_adding_stock() {
+        Laboratory lab = new Laboratory(Arrays.asList("Water"));
+
+        lab.add("Water", 10.5);
+
+        assertEquals(10.5, lab.getQuantity("Water"));
+    }
 }
