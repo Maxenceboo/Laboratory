@@ -22,10 +22,12 @@ public class Laboratory {
     }
 
     public void add(String substance, double quantity) {
-        if (this.stock.containsKey(substance)) {
-            double newQuantity = this.stock.get(substance) + quantity;
-            this.stock.put(substance, newQuantity);
+        if (!this.stock.containsKey(substance)) {
+            throw new IllegalArgumentException("Unknown substance: " + substance);
         }
+
+        double newQuantity = this.stock.get(substance) + quantity;
+        this.stock.put(substance, newQuantity);
     }
 
 }
