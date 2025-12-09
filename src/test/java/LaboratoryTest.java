@@ -39,4 +39,14 @@ class LaboratoryTest {
 
         assertEquals(10.5, lab.getQuantity("Water"));
     }
+
+    @Test
+    void should_throw_exception_when_adding_unknown_substance() {
+        Laboratory lab = new Laboratory(Arrays.asList("Water"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            lab.add("Gold", 5.0);
+        });
+    }
+
 }
