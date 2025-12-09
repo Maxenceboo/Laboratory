@@ -22,7 +22,10 @@ public class Laboratory {
     }
 
     public void add(String substance, double quantity) {
-        double currentQuantity = this.stock.get(substance);
-        this.stock.put(substance, currentQuantity + quantity);
+        if (this.stock.containsKey(substance)) {
+            double newQuantity = this.stock.get(substance) + quantity;
+            this.stock.put(substance, newQuantity);
+        }
     }
+
 }
