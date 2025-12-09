@@ -21,4 +21,13 @@ class LaboratoryTest {
         double quantity = lab.getQuantity("Water");
         assertEquals(0.0, quantity);
     }
+
+    @Test
+    void should_throw_exception_when_getting_quantity_of_unknown_substance() {
+        Laboratory lab = new Laboratory(Arrays.asList("Water"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            lab.getQuantity("Gold"); // "Gold" n'a pas été initialisé
+        });
+    }
 }
