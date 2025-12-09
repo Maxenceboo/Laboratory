@@ -114,6 +114,25 @@ class LaboratoryTest {
         assertEquals(2.0, lab.getQuantity("Water"));
     }
 
+    @Test
+    void should_produce_limited_quantity_when_stock_is_insufficient() {
+        Map<String, Double> ingredients = new HashMap<>();
+        ingredients.put("Hydrogen", 2.0);
+
+        Map<String, Map<String, Double>> reactions = new HashMap<>();
+        reactions.put("Water", ingredients);
+
+        Laboratory lab = new Laboratory(Arrays.asList("Hydrogen"), reactions);
+
+        lab.add("Hydrogen", 2.0);
+
+        double produced = lab.make("Water", 5.0);
+
+        assertEquals(1.0, produced, "Should be limited by Hydrogen stock");
+        assertEquals(0.0, lab.getQuantity("Hydrogen"), "Stock should be empty");
+        assertEquals(1.0, lab.getQuantity("Water"), "Only 1 unit produced");
+    }
+
     // --- Helper Methods ---
 
     private Laboratory createSimpleLab(String... substances) {
