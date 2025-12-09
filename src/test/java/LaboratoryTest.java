@@ -49,4 +49,13 @@ class LaboratoryTest {
         });
     }
 
+    @Test
+    void should_throw_exception_when_adding_negative_quantity() {
+        Laboratory lab = new Laboratory(Arrays.asList("Water"));
+
+        assertThrows(IllegalArgumentException.class, () -> {
+            lab.add("Water", -5.0);
+        });
+    }
+
 }
