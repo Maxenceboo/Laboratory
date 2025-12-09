@@ -50,25 +50,42 @@ public class Laboratory {
         this.stock.put(substance, newQuantity);
     }
 
-    public double make(String productName, double quantity) {
+    public double make(String productName, double requestedQuantity) {
         if (!this.reactions.containsKey(productName)) {
             throw new IllegalArgumentException("Unknown product: " + productName);
         }
         Map<String, Double> recipe = this.reactions.get(productName);
 
+        double maxProducible = requestedQuantity;
+
         for (Map.Entry<String, Double> ingredient : recipe.entrySet()) {
             String componentName = ingredient.getKey();
             double quantityPerUnit = ingredient.getValue();
 
-            double requiredTotal = quantityPerUnit * quantity;
+            double availableStock = this.stock.get(componentName);
+
+            double maxWithThisIngredient = availableStock / quantityPerUnit;
+
+            if (maxWithThisIngredient < maxProducible) {
+                maxProducible = maxWithThisIngredient;
+            }
+        }
+
+        double actualQuantity = maxProducible;
+
+        for (Map.Entry<String, Double> ingredient : recipe.entrySet()) {
+            String componentName = ingredient.getKey();
+            double quantityPerUnit = ingredient.getValue();
+
+            double requiredTotal = quantityPerUnit * actualQuantity;
 
             double currentStock = this.stock.get(componentName);
             this.stock.put(componentName, currentStock - requiredTotal);
         }
 
         double currentProductStock = this.stock.get(productName);
-        this.stock.put(productName, currentProductStock + quantity);
+        this.stock.put(productName, currentProductStock + actualQuantity);
 
-        return quantity;
+        return actualQuantity;
     }
 }
