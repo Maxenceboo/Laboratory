@@ -75,5 +75,3 @@ Prendre en charge le cas de **références circulaires**.
 * **Vérification :** L'historique des commits sera audité pour valider la méthode TDD.
 
 ---
-
-### Souhaitez-vous que je génère le premier test unitaire (l'étape RED) pour l'initialisation de la classe Laboratory dans un langage spécifique (Python, Java, C#...) ?
