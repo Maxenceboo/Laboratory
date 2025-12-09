@@ -22,5 +22,7 @@ public class Laboratory {
     }
 
     public void add(String substance, double quantity) {
+        double currentQuantity = this.stock.get(substance);
+        this.stock.put(substance, currentQuantity + quantity);
     }
 }
