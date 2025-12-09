@@ -51,6 +51,24 @@ public class Laboratory {
     }
 
     public double make(String productName, double quantity) {
-        return -1.0; // Placeholder for future implementation
+        if (!this.reactions.containsKey(productName)) {
+            throw new IllegalArgumentException("Unknown product: " + productName);
+        }
+        Map<String, Double> recipe = this.reactions.get(productName);
+
+        for (Map.Entry<String, Double> ingredient : recipe.entrySet()) {
+            String componentName = ingredient.getKey();
+            double quantityPerUnit = ingredient.getValue();
+
+            double requiredTotal = quantityPerUnit * quantity;
+
+            double currentStock = this.stock.get(componentName);
+            this.stock.put(componentName, currentStock - requiredTotal);
+        }
+
+        double currentProductStock = this.stock.get(productName);
+        this.stock.put(productName, currentProductStock + quantity);
+
+        return quantity;
     }
 }
