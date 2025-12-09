@@ -91,6 +91,29 @@ class LaboratoryTest {
         assertEquals(10.0, lab.getQuantity("Water"));
     }
 
+    @Test
+    void should_produce_requested_quantity_when_stock_is_sufficient() {
+        Map<String, Double> waterIngredients = new HashMap<>();
+        waterIngredients.put("Hydrogen", 2.0);
+        waterIngredients.put("Oxygen", 1.0);
+
+        Map<String, Map<String, Double>> reactions = new HashMap<>();
+        reactions.put("Water", waterIngredients);
+
+        Laboratory lab = new Laboratory(Arrays.asList("Hydrogen", "Oxygen"), reactions);
+
+        lab.add("Hydrogen", 10.0);
+        lab.add("Oxygen", 5.0);
+
+        double produced = lab.make("Water", 2.0);
+
+        assertEquals(2.0, produced, "Should produce exactly what is requested");
+
+        assertEquals(6.0, lab.getQuantity("Hydrogen"));
+        assertEquals(3.0, lab.getQuantity("Oxygen"));
+        assertEquals(2.0, lab.getQuantity("Water"));
+    }
+
     // --- Helper Methods ---
 
     private Laboratory createSimpleLab(String... substances) {

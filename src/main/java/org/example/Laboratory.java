@@ -50,4 +50,7 @@ public class Laboratory {
         this.stock.put(substance, newQuantity);
     }
 
+    public double make(String productName, double quantity) {
+        return -1.0; // Placeholder for future implementation
+    }
 }
