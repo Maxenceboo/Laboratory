@@ -1,8 +1,6 @@
 package org.example;
 
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 public class Laboratory {
 
@@ -51,37 +49,47 @@ public class Laboratory {
     }
 
     public double make(String productName, double requestedQuantity) {
-        return makeRecursive(productName, requestedQuantity);
+        return makeRecursive(productName, requestedQuantity, new HashSet<>());
     }
 
-    private double makeRecursive(String productName, double requestedQuantity) {
+    private double makeRecursive(String productName, double requestedQuantity, Set<String> visiting) {
         if (!this.reactions.containsKey(productName)) {
             return 0.0;
         }
-        Map<String, Double> recipe = this.reactions.get(productName);
 
-        for (Map.Entry<String, Double> ingredient : recipe.entrySet()) {
-            String ingredientName = ingredient.getKey();
-            double neededPerUnit = ingredient.getValue();
-
-            double totalNeeded = neededPerUnit * requestedQuantity;
-
-            double currentStock = this.stock.getOrDefault(ingredientName, 0.0);
-
-            if (currentStock < totalNeeded) {
-                double missing = totalNeeded - currentStock;
-
-                if (this.reactions.containsKey(ingredientName)) {
-                    makeRecursive(ingredientName, missing);
-                }
-            }
+        if (visiting.contains(productName)) {
+            return 0.0;
         }
 
-        double actualQuantity = calculateMaxProducible(recipe, requestedQuantity);
-        consumeIngredients(recipe, actualQuantity);
-        produceResult(productName, actualQuantity);
+        visiting.add(productName);
 
-        return actualQuantity;
+        try {
+            Map<String, Double> recipe = this.reactions.get(productName);
+
+            for (Map.Entry<String, Double> ingredient : recipe.entrySet()) {
+                String ingredientName = ingredient.getKey();
+                double neededPerUnit = ingredient.getValue();
+
+                double totalNeeded = neededPerUnit * requestedQuantity;
+                double currentStock = this.stock.getOrDefault(ingredientName, 0.0);
+
+                if (currentStock < totalNeeded) {
+                    double missing = totalNeeded - currentStock;
+                    if (this.reactions.containsKey(ingredientName)) {
+                        makeRecursive(ingredientName, missing, visiting);
+                    }
+                }
+            }
+
+            double actualQuantity = calculateMaxProducible(recipe, requestedQuantity);
+            consumeIngredients(recipe, actualQuantity);
+            produceResult(productName, actualQuantity);
+
+            return actualQuantity;
+
+        } finally {
+            visiting.remove(productName);
+        }
     }
 
     private double calculateMaxProducible(Map<String, Double> recipe, double requestedQuantity) {

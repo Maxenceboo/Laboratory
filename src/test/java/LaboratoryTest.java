@@ -157,6 +157,27 @@ class LaboratoryTest {
         assertEquals(0.0, lab.getQuantity("Intermediate"));
     }
 
+    @Test
+    void should_handle_circular_dependencies_gracefully() {
+        Map<String, Double> recipeA = new HashMap<>();
+        recipeA.put("B", 1.0);
+
+        Map<String, Double> recipeB = new HashMap<>();
+        recipeB.put("A", 1.0);
+
+        Map<String, Map<String, Double>> reactions = new HashMap<>();
+        reactions.put("A", recipeA);
+        reactions.put("B", recipeB);
+
+        Laboratory lab = new Laboratory(Arrays.asList(), reactions);
+
+        lab.add("A", 1.0);
+
+        assertDoesNotThrow(() -> {
+            lab.make("A", 10.0);
+        });
+    }
+
     // --- Helper Methods ---
 
     private Laboratory createSimpleLab(String... substances) {
