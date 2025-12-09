@@ -14,4 +14,11 @@ class LaboratoryTest {
         Laboratory lab = new Laboratory(substances);
         assertNotNull(lab);
     }
+
+    @Test
+    void should_return_zero_quantity_for_existing_substance_initially() {
+        Laboratory lab = new Laboratory(Arrays.asList("Water"));
+        double quantity = lab.getQuantity("Water");
+        assertEquals(0.0, quantity);
+    }
 }

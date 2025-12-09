@@ -9,4 +9,8 @@ public class Laboratory {
     public Laboratory(List<String> substances) {
         this.knownSubstances = new ArrayList<>(substances);
     }
+
+    public double getQuantity(String substance) {
+        return -1.;
+    }
 }
