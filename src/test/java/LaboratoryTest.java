@@ -74,6 +74,23 @@ class LaboratoryTest {
         assertNotNull(lab);
     }
 
+    @Test
+    void should_allow_adding_product_to_stock() {
+        List<String> substances = Arrays.asList("Hydrogen", "Oxygen");
+
+        Map<String, Double> waterIngredients = new HashMap<>();
+        waterIngredients.put("Hydrogen", 2.0);
+
+        Map<String, Map<String, Double>> reactions = new HashMap<>();
+        reactions.put("Water", waterIngredients);
+
+        Laboratory lab = new Laboratory(substances, reactions);
+
+        lab.add("Water", 10.0);
+
+        assertEquals(10.0, lab.getQuantity("Water"));
+    }
+
     // --- Helper Methods ---
 
     private Laboratory createSimpleLab(String... substances) {
