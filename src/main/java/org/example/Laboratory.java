@@ -7,7 +7,7 @@ import java.util.HashMap;
 public class Laboratory {
     private final Map<String, Double> stock;
 
-    public Laboratory(List<String> knownSubstances) {
+    public Laboratory(List<String> knownSubstances, Map<String, Map<String, Double>> reactions) {
         this.stock = new HashMap<>();
         for (String sub : knownSubstances) {
             this.stock.put(sub, 0.0);
