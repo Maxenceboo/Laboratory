@@ -1,16 +1,20 @@
 package org.example;
 
 import java.util.List;
-import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 public class Laboratory {
-    private final List<String> knownSubstances;
+    private final Map<String, Double> stock;
 
-    public Laboratory(List<String> substances) {
-        this.knownSubstances = new ArrayList<>(substances);
+    public Laboratory(List<String> knownSubstances) {
+        this.stock = new HashMap<>();
+        for (String sub : knownSubstances) {
+            this.stock.put(sub, 0.0);
+        }
     }
 
     public double getQuantity(String substance) {
-        return 0.0;
+        return this.stock.get(substance);
     }
 }
