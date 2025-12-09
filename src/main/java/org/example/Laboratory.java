@@ -13,13 +13,17 @@ public class Laboratory {
         this.stock = new HashMap<>();
         this.reactions = reactions;
 
+        initializeStock(knownSubstances, reactions);
+    }
+
+    private void initializeStock(List<String> knownSubstances, Map<String, Map<String, Double>> reactions) {
         for (String sub : knownSubstances) {
             this.stock.put(sub, 0.0);
         }
 
         if (reactions != null) {
             for (String product : reactions.keySet()) {
-                this.stock.put(product, 0.0);
+                this.stock.putIfAbsent(product, 0.0);
             }
         }
     }
