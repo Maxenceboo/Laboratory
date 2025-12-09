@@ -13,20 +13,20 @@ class LaboratoryTest {
     @Test
     void should_initialize_laboratory_with_known_substances() {
         List<String> substances = Arrays.asList("Water", "Carbon");
-        Laboratory lab = new Laboratory(substances, reactions);
+        Laboratory lab = new Laboratory(substances, new HashMap<>());
         assertNotNull(lab);
     }
 
     @Test
     void should_return_zero_quantity_for_existing_substance_initially() {
-        Laboratory lab = new Laboratory(Arrays.asList("Water"), reactions);
+        Laboratory lab = new Laboratory(Arrays.asList("Water"), new HashMap<>());
         double quantity = lab.getQuantity("Water");
         assertEquals(0.0, quantity);
     }
 
     @Test
     void should_throw_exception_when_getting_quantity_of_unknown_substance() {
-        Laboratory lab = new Laboratory(Arrays.asList("Water"), reactions);
+        Laboratory lab = new Laboratory(Arrays.asList("Water"), new HashMap<>());
 
         assertThrows(IllegalArgumentException.class, () -> {
             lab.getQuantity("Gold"); // "Gold" n'a pas été initialisé
@@ -35,7 +35,7 @@ class LaboratoryTest {
 
     @Test
     void should_update_quantity_when_adding_stock() {
-        Laboratory lab = new Laboratory(Arrays.asList("Water"), reactions);
+        Laboratory lab = new Laboratory(Arrays.asList("Water"), new HashMap<>());
 
         lab.add("Water", 10.5);
 
@@ -44,7 +44,7 @@ class LaboratoryTest {
 
     @Test
     void should_throw_exception_when_adding_unknown_substance() {
-        Laboratory lab = new Laboratory(Arrays.asList("Water"), reactions);
+        Laboratory lab = new Laboratory(Arrays.asList("Water"), new HashMap<>());
 
         assertThrows(IllegalArgumentException.class, () -> {
             lab.add("Gold", 5.0);
@@ -53,7 +53,7 @@ class LaboratoryTest {
 
     @Test
     void should_throw_exception_when_adding_negative_quantity() {
-        Laboratory lab = new Laboratory(Arrays.asList("Water"), reactions);
+        Laboratory lab = new Laboratory(Arrays.asList("Water"), new HashMap<>());
 
         assertThrows(IllegalArgumentException.class, () -> {
             lab.add("Water", -5.0);

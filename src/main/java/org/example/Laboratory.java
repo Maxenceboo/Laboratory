@@ -5,12 +5,22 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class Laboratory {
+
     private final Map<String, Double> stock;
+    private final Map<String, Map<String, Double>> reactions;
 
     public Laboratory(List<String> knownSubstances, Map<String, Map<String, Double>> reactions) {
         this.stock = new HashMap<>();
+        this.reactions = reactions;
+
         for (String sub : knownSubstances) {
             this.stock.put(sub, 0.0);
+        }
+
+        if (reactions != null) {
+            for (String product : reactions.keySet()) {
+                this.stock.put(product, 0.0);
+            }
         }
     }
 
