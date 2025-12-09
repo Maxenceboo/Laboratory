@@ -14,18 +14,19 @@ public class Laboratory {
         }
     }
 
-    public double getQuantity(String substance) {
+    private void ensureSubstanceExists(String substance) {
         if (!this.stock.containsKey(substance)) {
             throw new IllegalArgumentException("Unknown substance: " + substance);
         }
+    }
+
+    public double getQuantity(String substance) {
+        ensureSubstanceExists(substance);
         return this.stock.get(substance);
     }
 
     public void add(String substance, double quantity) {
-        if (!this.stock.containsKey(substance)) {
-            throw new IllegalArgumentException("Unknown substance: " + substance);
-        }
-
+        ensureSubstanceExists(substance);
         double newQuantity = this.stock.get(substance) + quantity;
         this.stock.put(substance, newQuantity);
     }
