@@ -11,6 +11,6 @@ public class Laboratory {
     }
 
     public double getQuantity(String substance) {
-        return -1.;
+        return 0.0;
     }
 }
